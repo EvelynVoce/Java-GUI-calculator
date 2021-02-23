@@ -269,8 +269,6 @@ public class numberAdditionGUI extends javax.swing.JFrame {
     //Actions for each button
     private void equalsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_equalsButtonActionPerformed
         // TODO add your handling code here:
-        System.out.println(text);
-        
         boolean contains_multiply = (text.contains("*"));
         boolean contains_divide = (text.contains("/"));
         boolean contains_plus = (text.contains("+"));
@@ -278,30 +276,30 @@ public class numberAdditionGUI extends javax.swing.JFrame {
         
         while(contains_multiply || contains_divide || contains_plus || 
                 contains_minus){
-            contains_multiply = (text.contains("*"));
-            contains_divide = (text.contains("/"));
-            contains_plus = (text.contains("+"));
-            contains_minus = (text.contains("-"));
-            
+            System.out.println("Starting text " + text);
             int index_of_symbol = -1;
-            if (contains_multiply){
-                index_of_symbol = text.indexOf("*");
-            }
-            else if (contains_divide){
-                index_of_symbol = text.indexOf("/");
-            }
-            else if (contains_plus){
-                index_of_symbol = text.indexOf("+");
-            }
-            else if (contains_minus){
-                index_of_symbol = text.indexOf("-");
-            }
-            else{
-                System.out.println(text);
-                outputScreenField.setText(text);
-            }
-       
+            
             int length_of_string = text.length();
+            for (int i = 0; i < length_of_string; i++){
+                char c = text.charAt(i);
+                if (contains_multiply || contains_divide){
+                    if (c == '*' || c == '/'){
+                        index_of_symbol = i;
+                        break;
+                    }
+                }
+                else if (contains_plus || contains_minus){
+                    if (c == '+' || c == '-'){
+                        index_of_symbol = i;
+                        break;
+                    }
+                }
+                else{
+                    System.out.println(text);
+                    outputScreenField.setText(text);
+                }
+            }
+            
             int index_of_left_symbol = -1;
             int index_of_right_symbol = length_of_string;
 
@@ -315,7 +313,6 @@ public class numberAdditionGUI extends javax.swing.JFrame {
 
             for (int i = index_of_symbol+1; i < length_of_string; i++){
                 char c = text.charAt(i);
-                System.out.println(c);
                 if (c == '*' || c == '/' || c == '+' || c == '-'){
                     index_of_right_symbol = i;
                     break;
@@ -324,13 +321,13 @@ public class numberAdditionGUI extends javax.swing.JFrame {
 
             String string_left = text.substring(index_of_left_symbol + 1,
                     index_of_symbol);
-            System.out.println(string_left);
+            System.out.println("left string " + string_left);
             double num_left = Double.parseDouble(string_left);
 
             String string_right = text.substring(index_of_symbol + 1,
                     index_of_right_symbol);
 
-            System.out.println(string_right);
+            System.out.println("right string " + string_right);
             double num_right = Double.parseDouble(string_right);
 
             double new_num = 0;
@@ -347,11 +344,19 @@ public class numberAdditionGUI extends javax.swing.JFrame {
                 new_num = num_left-num_right;
             }
         
-            System.out.println("Sub left " + text.substring(index_of_left_symbol+1, index_of_symbol));
-            System.out.println("Sub right " + text.substring(index_of_symbol + 1, text.length()));
-
+            System.out.println("New num" + new_num);
+            
+            System.out.println("Sub left " + text.substring(0, index_of_left_symbol+1));
+            System.out.println("Sub right " + text.substring(index_of_right_symbol, text.length()));
+            
             text = text.substring(0, index_of_left_symbol+1) + new_num + text.substring(index_of_right_symbol, text.length());
+            System.out.println("New text" + text + "\n");
             outputScreenField.setText(text);
+            
+            contains_multiply = (text.contains("*"));
+            contains_divide = (text.contains("/"));
+            contains_plus = (text.contains("+"));
+            contains_minus = (text.contains("-"));
         }
     }//GEN-LAST:event_equalsButtonActionPerformed
 
