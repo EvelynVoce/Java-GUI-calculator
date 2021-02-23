@@ -276,11 +276,11 @@ public class numberAdditionGUI extends javax.swing.JFrame {
         
         while(contains_multiply || contains_divide || contains_plus || 
                 contains_minus){
-            System.out.println("Starting text " + text);
-            int index_of_symbol = -1;
             
+            // Getting the index of the correct symbol (/ * + or -
+            int index_of_symbol = -1;
             int length_of_string = text.length();
-            for (int i = 0; i < length_of_string; i++){
+            for (int i = 0; i < text.length(); i++){
                 char c = text.charAt(i);
                 if (contains_multiply || contains_divide){
                     if (c == '*' || c == '/'){
@@ -299,10 +299,12 @@ public class numberAdditionGUI extends javax.swing.JFrame {
                     outputScreenField.setText(text);
                 }
             }
+
             
+            /* Getting the index of the symbols to the left and right of the
+            main symbol that has already been found*/
             int index_of_left_symbol = -1;
             int index_of_right_symbol = length_of_string;
-
             for (int i = index_of_symbol-1; i > -1; i--){
                 char c = text.charAt(i); 
                 if (c == '*' || c == '/' || c == '+' || c == '-'){
@@ -319,6 +321,7 @@ public class numberAdditionGUI extends javax.swing.JFrame {
                 }
             }
 
+            // Converting numbers to the left and right of the symbol to doubles
             String string_left = text.substring(index_of_left_symbol + 1,
                     index_of_symbol);
             System.out.println("left string " + string_left);
@@ -330,6 +333,8 @@ public class numberAdditionGUI extends javax.swing.JFrame {
             System.out.println("right string " + string_right);
             double num_right = Double.parseDouble(string_right);
 
+            
+            // Performing arithmetic operators on the 2 numbers
             double new_num = 0;
             if (text.charAt(index_of_symbol) == '*'){
                 new_num = num_left*num_right;
@@ -343,16 +348,13 @@ public class numberAdditionGUI extends javax.swing.JFrame {
             else if (text.charAt(index_of_symbol) == '-'){
                 new_num = num_left-num_right;
             }
-        
-            System.out.println("New num" + new_num);
             
-            System.out.println("Sub left " + text.substring(0, index_of_left_symbol+1));
-            System.out.println("Sub right " + text.substring(index_of_right_symbol, text.length()));
-            
+            /* Changes the text so these 2 numbers are altered correctly.
+            e.g 10*5 becomes 50 and 34-3 becomes 30*/
             text = text.substring(0, index_of_left_symbol+1) + new_num + text.substring(index_of_right_symbol, text.length());
-            System.out.println("New text" + text + "\n");
             outputScreenField.setText(text);
             
+            // Perform checks to see if the answer can be simplified anymore
             contains_multiply = (text.contains("*"));
             contains_divide = (text.contains("/"));
             contains_plus = (text.contains("+"));
